@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1519896446 source:d:\mohamad\students record\main.cpp
+	<iostream>
+	<iomanip>
+
+1519896446 source:c:\students record\main.cpp
+	<iostream>
+	<iomanip>
+
