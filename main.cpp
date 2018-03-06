@@ -12,8 +12,6 @@ class student {
        string id;
 
      student addstudent (student &s){
-
-
      cout <<"enter the student name some you need to add it :"<<endl;
      cin >>s.name;
 
@@ -22,12 +20,7 @@ class student {
      return s;
 
      }
-     //~student(){
-     //delete name;
-     //delete age;
-     //}
      void print(student s){
-         //student s;
      cout <<setw(25)<<"Students'name"<<setw(20)<<"the age"<<endl;
      cout <<setw(25)<<s.name<<setw(20)<<s.age<<endl;
      }
@@ -70,68 +63,68 @@ int  main()
          }
       else
            cout<<"conn object problem: "<<mysql_error(conn);
-  //menu choice:
+     //menu choice:
      cout << "Enter a menu choice: ";
      cin >> menu_choice;
 	 cout << '\n';
 
-  switch(menu_choice)
-{
-    //insert Data ( insert student in table):
-case 1:
-     // insert Data :
-
-    st.addstudent (st);
-        cout <<st.name<<endl;
-        cout<<st.age<<endl;
-    // print Data:
-      st.print(st);
-
-    if(conn)
+     switch(menu_choice)
      {
-        cout<<"connected to database Students names"<<endl;
+       //insert Data ( insert student in table):
+        case 1:
+            // insert Data :
 
-        string query="insert into elever (name,age) values('"+st.name+"','"+st.age+"')";
+               st.addstudent (st);
+              cout <<st.name<<endl;
+              cout<<st.age<<endl;
+            // print Data:
+               st.print(st);
 
-        const char* q = query.c_str();
+               if(conn)
+                 {
+                   cout<<"connected to database Students names"<<endl;
 
-        cout<<"query is: "<<q<<endl;
-        qstate = mysql_query(conn,q);
+                   string query="insert into elever (name,age) values('"+st.name+"','"+st.age+"')";
 
-            if(!qstate)
-              cout<<"record inserted successfully..."<<endl;
-            else
-              cout<<"query problem: "<<mysql_error(conn)<<endl;
+                   const char* q = query.c_str();
 
-           qstate = mysql_query(conn,"select * from elever");
+                   cout<<"query is: "<<q<<endl;
 
-            if(!qstate)
-               {
-                res = mysql_store_result(conn);
-                while(row=mysql_fetch_row(res))
-                      {
-                        cout<<"id: "<<row[0]<< " "
-                         <<"name: "<<row[1]<< " "
-                         <<"age: "<<row[2]<<endl;
-                      }
-               }
-            else
-               {
-                 cout<<"query error: "<<mysql_error(conn)<<endl;
-               }
- }
-    else
-         cout<<"connection problem: "<<mysql_error(conn)<<endl;
-         break;
+                   qstate = mysql_query(conn,q);
 
-case 2:
+                    if(!qstate)
+                          cout<<"record inserted successfully..."<<endl;
+                    else
+                          cout<<"query problem: "<<mysql_error(conn)<<endl;
 
-    // select student :
-          cout << "enter the id of student that you need select him>"<<endl;
-          cin>> s.id;
-          mysql_query(conn,"select * from  elever ");
-          res = mysql_use_result(conn);
-                while(row=mysql_fetch_row(res))
+                    qstate = mysql_query(conn,"select * from elever");
+
+                    if(!qstate)
+                     {
+                         res = mysql_store_result(conn);
+                         while(row=mysql_fetch_row(res))
+                              {
+                                cout<<"id: "<<row[0]<< " "
+                                <<"name: "<<row[1]<< " "
+                                <<"age: "<<row[2]<<endl;
+                              }
+                     }
+                   else
+                        cout<<"query error: "<<mysql_error(conn)<<endl;
+
+                    }
+                 else
+                      cout<<"connection problem: "<<mysql_error(conn)<<endl;
+                 break;
+
+        case 2:
+
+          // select student :
+             cout << "enter the id of student that you need select him>"<<endl;
+             cin>> s.id;
+             mysql_query(conn,"select * from  elever ");
+             res = mysql_use_result(conn);
+                 while(row=mysql_fetch_row(res))
                       {
                          if ( s.id == row[0])
                           {
@@ -141,33 +134,57 @@ case 2:
                             check=true;
                           }
                       }
-                       if (check==false)
+                         if (check==false)
+                             {
+                                 cout <<"this Id"<<s.id<<"\t\dosn't exist"<<endl;
+                                 ckeck==true;
+                             }
+               break;
+        case 3:
+              cout << "enter the id of student that you need update his info>"<<endl;
+             cin>> s.id;
+          mysql_query(conn,"select * from  elever ");
+             res = mysql_use_result(conn);
+                 while(row=mysql_fetch_row(res))
+                      {
+                         if ( s.id == row[0])
+                          {
+                            cout<<"id: "<<row[0]<< " "
+                            <<"name: "<<row[1]<< " "
+                            <<"age: "<<row[2]<<endl;
+                            cout<<"enter the new info ";
+
+                            check=true;
+                          }
+
+                      }
+                         if (check==false)
                             cout <<"this Id"<<s.id<<"\t\dosn't exist"<<endl;
 
 
-          // enter y for continue:
 
 
-          break;
-  default:
-        cout << "You have entered an invalid menu choice.\n"
+        case 4:
+         default:
+
+              cout << "You have entered an invalid menu choice.\n"
              << "Please try again.\n\n";
-          break;
-   }
-
-         cout << "if you want to continue press y or any key to exit"<<endl;
-        cin >> i;
+              break;
+         }
+     // enter y for continue:
+     cout << "if you want to continue press y or any key to exit"<<endl;
+     cin >> i;
 
            if (i=='y' || i=='Y')
-           {
-           j= true;
-           system("cls");
-            print_menu();
+            {
+               j= true;
+               system("cls");
+               print_menu();
            }
           else
-            j = false;
+               j = false;
 
-  }while(j==true);
+    }while(j==true);
 
     mysql_close(conn);
 
