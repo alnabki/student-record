@@ -10,16 +10,32 @@ class student {
        string name;
        string age;
        string id;
+    //  protected:
+        MYSQL* conn;
+public:
 
      student addstudent (student &s){
+
      cout <<"enter the student name some you need to add it :"<<endl;
      cin >>s.name;
 
      cout <<"enter the age :"<<endl;
      cin >>s.age;
-     return s;
-
+      return s;
      }
+ student connection (student &s){
+      s.conn = mysql_init(0);
+      s.conn = mysql_real_connect(conn,"localhost","root","","school",0,NULL,0);
+    if(s.conn)
+         {
+           cout<<"connection object ok, conn="<<s.conn<<endl;
+         }
+      else
+           cout<<"conn object problem: "<<mysql_error(conn);
+
+}
+
+
      void print(student s){
      cout <<setw(25)<<"Students'name"<<setw(20)<<"the age"<<endl;
      cout <<setw(25)<<s.name<<setw(20)<<s.age<<endl;
@@ -41,7 +57,7 @@ void insert (student){
 student st;
 
 
-    MYSQL* conn;
+
     MYSQL_ROW row;
     MYSQL_RES *res;
     int qstate ;
@@ -53,19 +69,13 @@ student st;
               cout<<st.age<<endl;
             // print Data:
                st.print(st);
-               conn = mysql_init(0);
-              conn = mysql_real_connect(conn,"localhost","root","","school",0,NULL,0);
+
 
       // check connection:
 
-      if(conn)
-         {
-           cout<<"connection object ok, conn="<<conn<<endl;
-         }
-      else
-           cout<<"conn object problem: "<<mysql_error(conn);
+     st.connection(st);
 
-               if(conn)
+               if(st.conn)
                  {
                    cout<<"connected to database Students names"<<endl;
 
@@ -75,18 +85,18 @@ student st;
 
                    cout<<"query is: "<<q<<endl;
 
-                   qstate = mysql_query(conn,q);
+                   qstate = mysql_query(st.conn,q);
 
                     if(!qstate)
                           cout<<"record inserted successfully..."<<endl;
                     else
-                          cout<<"query problem: "<<mysql_error(conn)<<endl;
+                          cout<<"query problem: "<<mysql_error(st.conn)<<endl;
 
-                    qstate = mysql_query(conn,"select * from elever");
+                    qstate = mysql_query(st.conn,"select * from elever");
 
                     if(!qstate)
                      {
-                         res = mysql_store_result(conn);
+                         res = mysql_store_result(st.conn);
                          while(row=mysql_fetch_row(res))
                               {
                                 cout<<"id: "<<row[0]<< " "
@@ -95,12 +105,12 @@ student st;
                               }
                      }
                    else
-                        cout<<"query error: "<<mysql_error(conn)<<endl;
+                        cout<<"query error: "<<mysql_error(st.conn)<<endl;
 
-                    }
-                 else
-                      cout<<"connection problem: "<<mysql_error(conn)<<endl;
-  mysql_close(conn);
+                   }
+               else
+                      cout<<"connection problem: "<<mysql_error(st.conn)<<endl;
+  mysql_close(st.conn);
 }
 void select(student)
 {
