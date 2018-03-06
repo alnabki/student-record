@@ -44,7 +44,7 @@ int  main()
     MYSQL* conn;
     MYSQL_ROW row;
     MYSQL_RES *res;
-    int qstate;
+    int qstate ,qst;
     int menu_choice;
      bool check=false;
     student st,s;
@@ -137,34 +137,51 @@ int  main()
                          if (check==false)
                              {
                                  cout <<"this Id"<<s.id<<"\t\dosn't exist"<<endl;
-                                 ckeck==true;
+                                 check==true;
                              }
                break;
         case 3:
               cout << "enter the id of student that you need update his info>"<<endl;
              cin>> s.id;
-          mysql_query(conn,"select * from  elever ");
+             cout<<"enter the new info "<<endl;
+                            cout <<"the name that you need to update\t";
+                            cin >>s.name;
+                            cout <<"the age the you need to correct:\t";
+                            cin >>s.age;
+                            mysql_query(conn,"update  elever set name='moustafa',age=22 where id =21");
+                           // string query="update  elever set name='bbbbb',age=22 where id =24";
+                           // const char* q = query.c_str();
+
+                           // cout<<"query is: "<<q<<endl;
+
+                         // qst = mysql_query(conn,q);
+                        //  if(!qst)
+                        //  cout<<"record update successfully..."<<endl;
+                       //   else
+                      //   cout<<"query problem: "<<mysql_error(conn)<<endl;
+
+             mysql_query(conn,"select * from  elever ");
              res = mysql_use_result(conn);
+
                  while(row=mysql_fetch_row(res))
                       {
                          if ( s.id == row[0])
                           {
                             cout<<"id: "<<row[0]<< " "
                             <<"name: "<<row[1]<< " "
-                            <<"age: "<<row[2]<<endl;
-                            cout<<"enter the new info ";
+                           <<"age: "<<row[2]<<endl;
 
-                            check=true;
+                         check=true;
                           }
-
                       }
+
                          if (check==false)
-                            cout <<"this Id"<<s.id<<"\t\dosn't exist"<<endl;
+                          cout <<"this Id"<<s.id<<"\t\dosn't exist"<<endl;
 
-
-
+            break;
 
         case 4:
+            break;
          default:
 
               cout << "You have entered an invalid menu choice.\n"

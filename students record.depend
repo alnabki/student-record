@@ -3,11 +3,12 @@
 	<iostream>
 	<iomanip>
 
-1520323589 source:c:\students record\main.cpp
+1520328693 source:c:\students record\main.cpp
 	<iostream>
 	<iomanip>
 	<windows.h>
 	<mysql.h>
+	<stdlib.h>
 
 1476109533 c:\users\mohamad alnabki\desktop\mysqlheaders\mysql.h
 	<sys/types.h>
