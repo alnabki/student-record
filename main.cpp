@@ -4,17 +4,16 @@
 #include <mysql.h>
 #include<stdlib.h>
 using namespace std;
-
 class student {
   public:
        string name;
        string age;
        string id;
-    //  protected:
-        MYSQL* conn;
-public:
-
-     student addstudent (student &s){
+  void print(student s){
+     cout <<setw(25)<<"Students'name"<<setw(20)<<"the age"<<endl;
+     cout <<setw(25)<<s.name<<setw(20)<<s.age<<endl;
+     }
+  student addstudent (student &s){
 
      cout <<"enter the student name some you need to add it :"<<endl;
      cin >>s.name;
@@ -23,60 +22,34 @@ public:
      cin >>s.age;
       return s;
      }
- student connection (student &s){
-      s.conn = mysql_init(0);
-      s.conn = mysql_real_connect(conn,"localhost","root","","school",0,NULL,0);
-    if(s.conn)
-         {
-           cout<<"connection object ok, conn="<<s.conn<<endl;
-         }
-      else
-           cout<<"conn object problem: "<<mysql_error(conn);
-
-}
-
-
-     void print(student s){
-     cout <<setw(25)<<"Students'name"<<setw(20)<<"the age"<<endl;
-     cout <<setw(25)<<s.name<<setw(20)<<s.age<<endl;
-     }
-friend insert();
-friend select();
-friend delet_student();
-    };
-void print_menu(){
-cout <<"************select you option*****************"<<endl;
-cout<<"select 1 if you want to add student "<<endl;
-cout<<"select 2 if you want to select  student by Id"<<endl;
-cout<<"select 3 if you want to Modify students information "<<endl;
-cout<<"select 4 if you want to delete student from record "<<endl;
-cout <<"************************************************"<<endl;
-}
-void insert (student){
-// insert Data :
-student st;
-
-
-
+};
+class databasemethode :public student{
+     public:
+     MYSQL* conn;
     MYSQL_ROW row;
     MYSQL_RES *res;
     int qstate ;
+    public:
+databasemethode (){
+      conn = mysql_init(0);
+      conn = mysql_real_connect(conn,"localhost","root","","school",0,NULL,0);
+    if(conn)
+         {
+           cout<<"connection object ok, conn="<<conn<<endl;
+         }
+      else
+           cout<<"conn object problem: "<<mysql_error(conn);
+}
 
 
+void insert (student){
+// insert Data :
+student st;
+databasemethode();
 
-               st.addstudent (st);
               cout <<st.name<<endl;
               cout<<st.age<<endl;
-            // print Data:
-               st.print(st);
 
-
-      // check connection:
-
-     st.connection(st);
-
-               if(st.conn)
-                 {
                    cout<<"connected to database Students names"<<endl;
 
                    string query="insert into elever (name,age) values('"+st.name+"','"+st.age+"')";
@@ -85,18 +58,18 @@ student st;
 
                    cout<<"query is: "<<q<<endl;
 
-                   qstate = mysql_query(st.conn,q);
+                   qstate = mysql_query(conn,q);
 
                     if(!qstate)
                           cout<<"record inserted successfully..."<<endl;
                     else
-                          cout<<"query problem: "<<mysql_error(st.conn)<<endl;
+                          cout<<"query problem: "<<mysql_error(conn)<<endl;
 
-                    qstate = mysql_query(st.conn,"select * from elever");
+                    qstate = mysql_query(conn,"select * from elever");
 
                     if(!qstate)
                      {
-                         res = mysql_store_result(st.conn);
+                         res = mysql_store_result(conn);
                          while(row=mysql_fetch_row(res))
                               {
                                 cout<<"id: "<<row[0]<< " "
@@ -105,13 +78,12 @@ student st;
                               }
                      }
                    else
-                        cout<<"query error: "<<mysql_error(st.conn)<<endl;
+                        cout<<"query error: "<<mysql_error(conn)<<endl;
 
                    }
-               else
-                      cout<<"connection problem: "<<mysql_error(st.conn)<<endl;
-  mysql_close(st.conn);
-}
+             //  else
+             //         cout<<"connection problem: "<<mysql_error(st.conn)<<endl;
+//  mysql_close(conn);
 void select(student)
 {
     student s;
@@ -121,17 +93,10 @@ void select(student)
     int qstate ;
     bool check=false;
      // select student :
-     conn = mysql_init(0);
-      conn = mysql_real_connect(conn,"localhost","root","","school",0,NULL,0);
 
       // check connection:
 
-      if(conn)
-         {
-           cout<<"connection object ok, conn="<<conn<<endl;
-         }
-      else
-           cout<<"conn object problem: "<<mysql_error(conn);
+     databasemethode();
              cout << "enter the id of student that you need select him>"<<endl;
              cin>> s.id;
              mysql_query(conn,"select * from  elever ");
@@ -163,8 +128,7 @@ void update ()
     MYSQL_RES *res;
     int qstate ;
     bool check=false;
-                         conn = mysql_init(0);
-                         conn = mysql_real_connect(conn,"localhost","root","","school",0,NULL,0);
+                      databasemethode();
 
 
                             cout << "enter the id of student that you need update his info>"<<endl;
@@ -186,9 +150,7 @@ void update ()
                             cin >>s.name;
                             cout <<"the age the you need to correct:\t";
                             cin >>s.age;
-                         conn = mysql_init(0);
-                         conn = mysql_real_connect(conn,"localhost","root","","school",0,NULL,0);
-
+                        databasemethode();
                             string q3 = "update  elever set name='"+s.name+"',age="+s.age+" where id ="+s.id;
                             const char* q4 = q3.c_str();
                             qstate = mysql_query(conn,q4);
@@ -278,6 +240,15 @@ void delet_student(student)
                   mysql_close(conn);
 
 }
+};
+void print_menu(){
+cout <<"************select you option*****************"<<endl;
+cout<<"select 1 if you want to add student "<<endl;
+cout<<"select 2 if you want to select  student by Id"<<endl;
+cout<<"select 3 if you want to Modify students information "<<endl;
+cout<<"select 4 if you want to delete student from record "<<endl;
+cout <<"************************************************"<<endl;
+}
 int  main()
 {
 
@@ -286,8 +257,9 @@ int  main()
 
     int menu_choice;
     student st;
-    print_menu();
-
+    databasemethode rec;
+    //print_menu();
+       print_menu();
 
   do {
 
@@ -300,16 +272,16 @@ int  main()
              {
                //insert Data ( insert student in table):
               case 1:
-                    insert(st);
+                   rec.insert(st);
                     break;
               case 2:
-                    select(st);
+                    rec.select(st);
                     break;
               case 3:
-                     update();
+                     rec.update();
                      break;
               case 4:
-                     delet_student(st);
+                     rec.delet_student(st);
                      break;
               default:
 
