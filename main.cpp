@@ -5,50 +5,43 @@
 #include<stdlib.h>
 using namespace std;
 class student {
-  public:
+ public:
        string name;
        string age;
        string id;
   void print(student s){
-     cout <<setw(25)<<"Students'name"<<setw(20)<<"the age"<<endl;
-     cout <<setw(25)<<s.name<<setw(20)<<s.age<<endl;
-     }
-  student addstudent (student &s){
-
-     cout <<"enter the student name some you need to add it :"<<endl;
-     cin >>s.name;
-
-     cout <<"enter the age :"<<endl;
-     cin >>s.age;
-      return s;
-     }
+       cout <<setw(25)<<"Students'name"<<setw(20)<<"the age"<<endl;
+       cout <<setw(25)<<s.name<<setw(20)<<s.age<<endl;
+       }
+  void addstudent(student st)  {
+       cout <<"enter the student name some you need to add it :"<<endl;
+       cin >>name;
+       cout <<"enter the age :"<<endl;
+       cin >>age;
+       }
 };
 class databasemethode :public student{
-     public:
-     MYSQL* conn;
-    MYSQL_ROW row;
-    MYSQL_RES *res;
-    int qstate ;
-    public:
-databasemethode (){
-      conn = mysql_init(0);
-      conn = mysql_real_connect(conn,"localhost","root","","school",0,NULL,0);
-    if(conn)
-         {
-           cout<<"connection object ok, conn="<<conn<<endl;
-         }
-      else
+        public:
+        MYSQL* conn;
+        MYSQL_ROW row;
+        MYSQL_RES *res;
+        int qstate ;
+        public:
+    databasemethode (){
+          conn = mysql_init(0);
+          conn = mysql_real_connect(conn,"localhost","root","","school",0,NULL,0);
+           if(conn)
+                {
+                  cout<<"connection object ok, conn="<<conn<<endl;
+                }
+           else
            cout<<"conn object problem: "<<mysql_error(conn);
-}
-
-
-void insert (student){
-// insert Data :
-student st;
-databasemethode();
-
-              cout <<st.name<<endl;
-              cout<<st.age<<endl;
+      }
+void insert (){
+     student st;
+     databasemethode();
+     st.addstudent(st) ;
+     st.print(st);
 
                    cout<<"connected to database Students names"<<endl;
 
@@ -81,21 +74,11 @@ databasemethode();
                         cout<<"query error: "<<mysql_error(conn)<<endl;
 
                    }
-             //  else
-             //         cout<<"connection problem: "<<mysql_error(st.conn)<<endl;
-//  mysql_close(conn);
-void select(student)
+
+void select()
 {
     student s;
-     MYSQL* conn;
-    MYSQL_ROW row;
-    MYSQL_RES *res;
-    int qstate ;
     bool check=false;
-     // select student :
-
-      // check connection:
-
      databasemethode();
              cout << "enter the id of student that you need select him>"<<endl;
              cin>> s.id;
@@ -104,33 +87,26 @@ void select(student)
                  while(row=mysql_fetch_row(res))
                       {
                          if ( s.id == row[0])
-                          {
-                            cout<<"id: "<<row[0]<< " "
-                            <<"name: "<<row[1]<< " "
-                            <<"age: "<<row[2]<<endl;
-                            check=true;
-                          }
+                               {
+                                 cout<<"id: "<<row[0]<< " "
+                                 <<"name: "<<row[1]<< " "
+                                 <<"age: "<<row[2]<<endl;
+                                 check=true;
+                               }
                       }
                          if (check==false)
-                             {
+                                {
                                  cout <<"this Id"<<s.id<<"\t\dosn't exist"<<endl;
-                                 check==true;
-                             }
+
+                                }
 
 
-  mysql_close(conn);
-}
+      }
 void update ()
 {
     student s;
-    MYSQL* conn;
-    MYSQL_ROW row;
-    MYSQL_RES *res;
-    int qstate ;
     bool check=false;
-                      databasemethode();
-
-
+                            databasemethode();
                             cout << "enter the id of student that you need update his info>"<<endl;
                             cin>> s.id;
                              mysql_query(conn,"select * from  elever ");
@@ -143,50 +119,50 @@ void update ()
                                             <<"name: "<<row[1]<< " "
                                             <<"age: "<<row[2]<<endl;
                                               check=true;
-
-
-                            cout<<"enter the new info "<<endl;
-                            cout <<"the name that you need to update\t";
-                            cin >>s.name;
-                            cout <<"the age the you need to correct:\t";
-                            cin >>s.age;
-                        databasemethode();
-                            string q3 = "update  elever set name='"+s.name+"',age="+s.age+" where id ="+s.id;
-                            const char* q4 = q3.c_str();
-                            qstate = mysql_query(conn,q4);
-
-                           if(!qstate)
-                                 cout<<"record inserted successfully..."<<endl;
-                            else
-                                 cout<<"query problem: "<<mysql_error(conn)<<endl;
-
-
-                           mysql_query(conn,"select * from  elever ");
-                           if(!qstate)
-                           {
-
-                           res = mysql_use_result(conn);
-                           while(row=mysql_fetch_row(res))
-                              {
-                                            cout<<"id: "<<row[0]<< " "
-                                            <<"name: "<<row[1]<< " "
-                                            <<"age: "<<row[2]<<endl;
-                              }
-                               }
-                               }
-                               }
+                                         }
+                                 }
                                if (check ==false)
                                 cout <<"the records not exist in the table"<<endl;
-                  mysql_close(conn);
+
+                                      if (check=true)
+                                      {
+
+                                             cout<<"enter the new info "<<endl;
+                                             cout <<"the name that you need to update\t";
+                                             cin >>s.name;
+                                              cout <<"the age the you need to correct:\t";
+                                             cin >>s.age;
+                                             string q3 = "update  elever set name='"+s.name+"',age="+s.age+" where id ="+s.id;
+                                             const char* q4 = q3.c_str();
+                                             cout <<q4<<endl;
+                                             databasemethode();
+                                             qstate = mysql_query(conn,q4);
+
+                                                  if(!qstate)
+                                                         cout<<"record inserted successfully..."<<endl;
+                                                  else
+                                                         cout<<"query problem: "<<mysql_error(conn)<<endl;
+
+
+                                            mysql_query(conn,"select * from  elever ");
+                                                    if(!qstate)
+                                                            {
+                                                               res = mysql_use_result(conn);
+                                                                 while(row=mysql_fetch_row(res))
+                                                                        {
+                                                                           cout<<"id: "<<row[0]<< " "
+                                                                            <<"name: "<<row[1]<< " "
+                                                                            <<"age: "<<row[2]<<endl;
+                                                                        }
+                                                            }
+                                        }
+
+
 }
 
-void delet_student(student)
+void delet_student()
 {
     student s;
-    MYSQL* conn;
-    MYSQL_ROW row;
-    MYSQL_RES *res;
-    int qstate ;
     bool check=false;
                          conn = mysql_init(0);
                          conn = mysql_real_connect(conn,"localhost","root","","school",0,NULL,0);
@@ -237,7 +213,6 @@ void delet_student(student)
 
                                if (check ==false)
                                 cout <<"the records not exist in the table"<<endl;
-                  mysql_close(conn);
 
 }
 };
@@ -256,9 +231,9 @@ int  main()
     bool j = false;
 
     int menu_choice;
-    student st;
-    databasemethode rec;
-    //print_menu();
+
+databasemethode rec;
+
        print_menu();
 
   do {
@@ -272,16 +247,16 @@ int  main()
              {
                //insert Data ( insert student in table):
               case 1:
-                   rec.insert(st);
+                   rec.insert();
                     break;
               case 2:
-                    rec.select(st);
+                    rec.select();
                     break;
               case 3:
                      rec.update();
                      break;
               case 4:
-                     rec.delet_student(st);
+                     rec.delet_student();
                      break;
               default:
 
@@ -302,6 +277,7 @@ int  main()
            else
            {
                 j= false;
+                 mysql_close(rec.conn);
            }
 
 
